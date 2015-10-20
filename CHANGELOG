@@ -1,6 +1,15 @@
 ChangeLog :
 ===========
 
+2015/10/20 : 1.6.1
+    - DOC: specify that stats socket doc (section 9.2) is in management
+    - BUILD: install only relevant and existing documentation
+    - CLEANUP: don't ignore debian/ directory if present
+    - BUG/MINOR: dns: parsing error of some DNS response
+    - BUG/MEDIUM: namespaces: don't fail if no namespace is used
+    - BUG/MAJOR: ssl: free the generated SSL_CTX if the LRU cache is disabled
+    - MEDIUM: dns: Don't use the ANY query type
+
 2015/10/13 : 1.6.0
     - BUG/MINOR: Handle interactive mode in cli handler
     - DOC: global section missing parameters
