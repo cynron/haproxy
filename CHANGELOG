@@ -1,6 +1,56 @@
 ChangeLog :
 ===========
 
+2015/12/27 : 1.6.3
+    - BUG/MINOR: http rule: http capture 'id' rule points to a non existing id
+    - BUG/MINOR: server: check return value of fgets() in apply_server_state()
+    - BUG/MINOR: acl: don't use record layer in req_ssl_ver
+    - BUILD: freebsd: double declaration
+    - BUG/MEDIUM: lua: clean output buffer
+    - BUILD: check for libressl to be able to build against it
+    - DOC: lua-api/index.rst small example fixes, spelling correction.
+    - DOC: lua: architecture and first steps
+    - DOC: relation between timeout http-request and option http-buffer-request
+    - BUILD: Make deviceatlas require PCRE
+    - BUG: http: do not abort keep-alive connections on server timeout
+    - BUG/MEDIUM: http: switch the request channel to no-delay once done.
+    - BUG/MINOR: lua: don't force-sslv3 LUA's SSL socket
+    - BUILD/MINOR: http: proto_http.h needs sample.h
+    - BUG/MEDIUM: http: don't enable auto-close on the response side
+    - BUG/MEDIUM: stream: fix half-closed timeout handling
+    - CLEANUP: compression: don't allocate DEFAULT_MAXZLIBMEM without USE_ZLIB
+    - BUG/MEDIUM: cli: changing compression rate-limiting must require admin level
+    - BUG/MEDIUM: sample: urlp can't match an empty value
+    - BUILD: dumpstats: silencing warning for printf format specifier / time_t
+    - CLEANUP: proxy: calloc call inverted arguments
+    - MINOR: da: silent logging by default and displaying DeviceAtlas support if built.
+    - BUG/MEDIUM: da: stop DeviceAtlas processing in the convertor if there is no input.
+    - DOC: Edited 51Degrees section of README/ (cherry picked from commit a7bbdd955984f0d69812ff055cc145a338e76daa)
+    - BUG/MEDIUM: checks: email-alert not working when declared in defaults
+    - BUG/MINOR: checks: email-alert causes a segfault when an unknown mailers section is configured
+    - BUG/MINOR: checks: typo in an email-alert error message
+    - BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and last rule is a CONNECT with no port
+    - BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and first rule(s) is (are) COMMENT
+    - BUG/MEDIUM: http: fix http-reuse when frontend and backend differ
+    - DOC: prefer using http-request/response over reqXXX/rspXXX directives
+    - BUG/MEDIUM: config: properly adjust maxconn with nbproc when memmax is forced
+    - BUG/MEDIUM: peers: table entries learned from a remote are pushed to others after a random delay.
+    - BUG/MEDIUM: peers: old stick table updates could be repushed.
+    - CLEANUP: haproxy: using _GNU_SOURCE instead of __USE_GNU macro.
+    - MINOR: lua: service/applet can have access to the HTTP headers when a POST is received
+    - REORG/MINOR: lua: convert boolean "int" to bitfield
+    - BUG/MEDIUM: lua: Lua applets must not fetch samples using http_txn
+    - BUG/MINOR: lua: Lua applets must not use http_txn
+    - BUG/MEDIUM: lua: Forbid HTTP applets from being called from tcp rulesets
+    - BUG/MAJOR: lua: Do not force the HTTP analysers in use-services
+    - CLEANUP: lua: bad error messages
+    - DOC: lua: fix lua API
+    - DOC: mailers: typo in 'hostname' description
+    - DOC: compression: missing mention of libslz for compression algorithm
+    - BUILD/MINOR: regex: missing header
+    - BUG/MINOR: stream: bad return code
+    - DOC: lua: fix somme errors and add implicit types
+
 2015/11/03 : 1.6.2
     - BUILD: ssl: fix build error introduced in commit 7969a3 with OpenSSL < 1.0.0
     - DOC: fix a typo for a "deviceatlas" keyword
