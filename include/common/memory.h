@@ -29,6 +29,7 @@
 #include <common/mini-clist.h>
 
 #define MEM_F_SHARED	0x1
+#define MEM_F_EXACT	0x2
 
 struct pool_head {
 	void **free_list;

@@ -24,7 +24,9 @@ int mem_poison_byte = -1;
 
 /* Try to find an existing shared pool with the same characteristics and
  * returns it, otherwise creates this one. NULL is returned if no memory
- * is available for a new creation.
+ * is available for a new creation. Two flags are supported :
+ *   - MEM_F_SHARED to indicate that the pool may be shared with other users
+ *   - MEM_F_EXACT to indicate that the size must not be rounded up
  */
 struct pool_head *create_pool(char *name, unsigned int size, unsigned int flags)
 {
@@ -39,8 +41,10 @@ struct pool_head *create_pool(char *name, unsigned int size, unsigned int flags)
 	 * ease merging of entries. Note that the rounding is a power of two.
 	 */
 
-	align = 16;
-	size  = (size + align - 1) & -align;
+	if (!(flags & MEM_F_EXACT)) {
+		align = 16;
+		size  = (size + align - 1) & -align;
+	}
 
 	start = &pools;
 	pool = NULL;
