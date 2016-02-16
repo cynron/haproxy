@@ -2356,12 +2356,16 @@ int cfg_parse_resolvers(const char *file, int linenum, char **args, int kwm)
 	else if (strcmp(args[0], "timeout") == 0) {
 		const char *res;
 		unsigned int timeout_retry;
-
-		if (!*args[2]) {
+		if (!*args[1] || !*args[2]) {
 			Alert("parsing [%s:%d] : '%s' expects 'retry' and <time> as arguments.\n",
 				file, linenum, args[0]);
 			err_code |= ERR_ALERT | ERR_FATAL;
 			goto out;
+		}
+		else if (strcmp(args[1], "retry") != 0) {
+			Warning("parsing [%s:%d] : '%s' expects 'retry' and <time> as arguments, got '%s'.\n",
+				file, linenum, args[0], args[1]);
+			err_code |= ERR_WARN;
 		}
 		res = parse_time_err(args[2], &timeout_retry, TIME_UNIT_MS);
 		if (res) {
