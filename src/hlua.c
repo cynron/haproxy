@@ -5713,6 +5713,8 @@ static void hlua_applet_tcp_fct(struct appctx *ctx)
 
 	/* yield. */
 	case HLUA_E_AGAIN:
+		if (hlua->wake_time != TICK_ETERNITY)
+			task_schedule(ctx->ctx.hlua_apptcp.task, hlua->wake_time);
 		return;
 
 	/* finished with error. */
@@ -5936,6 +5938,8 @@ static void hlua_applet_http_fct(struct appctx *ctx)
 
 		/* yield. */
 		case HLUA_E_AGAIN:
+			if (hlua->wake_time != TICK_ETERNITY)
+				task_schedule(ctx->ctx.hlua_apphttp.task, hlua->wake_time);
 			return;
 
 		/* finished with error. */
