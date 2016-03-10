@@ -3039,10 +3039,7 @@ __LJMP static int hlua_run_sample_fetch(lua_State *L)
 	memset(&smp, 0, sizeof(smp));
 
 	/* Run the sample fetch process. */
-	smp.px = hsmp->p;
-	smp.sess = hsmp->s->sess;
-	smp.strm = hsmp->s;
-	smp.opt = hsmp->dir & SMP_OPT_DIR;
+	smp_set_owner(&smp, hsmp->p, hsmp->s->sess, hsmp->s, hsmp->dir & SMP_OPT_DIR);
 	if (!f->process(args, &smp, f->kw, f->private)) {
 		if (hsmp->flags & HLUA_F_AS_STRING)
 			lua_pushstring(L, "");
@@ -3149,6 +3146,8 @@ __LJMP static int hlua_run_sample_conv(lua_State *L)
 		WILL_LJMP(lua_error(L));
 	}
 
+	smp_set_owner(&smp, hsmp->p, hsmp->s->sess, hsmp->s, hsmp->dir & SMP_OPT_DIR);
+
 	/* Apply expected cast. */
 	if (!sample_casts[smp.data.type][conv->in_type]) {
 		hlua_pusherror(L, "invalid input argument: cannot cast '%s' to '%s'",
@@ -3162,10 +3161,6 @@ __LJMP static int hlua_run_sample_conv(lua_State *L)
 	}
 
 	/* Run the sample conversion process. */
-	smp.px = hsmp->p;
-	smp.sess = hsmp->s->sess;
-	smp.strm = hsmp->s;
-	smp.opt = hsmp->dir & SMP_OPT_DIR;
 	if (!conv->process(args, &smp, conv->private)) {
 		if (hsmp->flags & HLUA_F_AS_STRING)
 			lua_pushstring(L, "");
