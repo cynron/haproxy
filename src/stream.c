@@ -2669,7 +2669,8 @@ smp_fetch_sc_stkctr(struct session *sess, struct stream *strm, const struct arg 
 	 * ctr form the stream, then from the session if it was not there.
 	 */
 
-	stkptr = &strm->stkctr[num];
+	if (strm)
+		stkptr = &strm->stkctr[num];
 	if (!strm || !stkctr_entry(stkptr)) {
 		stkptr = &sess->stkctr[num];
 		if (!stkctr_entry(stkptr))
@@ -2732,9 +2733,6 @@ smp_create_src_stkctr(struct session *sess, struct stream *strm, const struct ar
 static int
 smp_fetch_sc_tracked(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
-	if (!smp->strm)
-		return 0;
-
 	smp->flags = SMP_F_VOL_TEST;
 	smp->data.type = SMP_T_BOOL;
 	smp->data.u.sint = !!smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
@@ -2750,9 +2748,6 @@ static int
 smp_fetch_sc_get_gpt0(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -2781,9 +2776,6 @@ smp_fetch_sc_get_gpc0(const struct arg *args, struct sample *smp, const char *kw
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -2811,9 +2803,6 @@ smp_fetch_sc_gpc0_rate(const struct arg *args, struct sample *smp, const char *k
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -2839,9 +2828,6 @@ static int
 smp_fetch_sc_inc_gpc0(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -2887,9 +2873,6 @@ smp_fetch_sc_clr_gpc0(const struct arg *args, struct sample *smp, const char *kw
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -2922,9 +2905,6 @@ smp_fetch_sc_conn_cnt(const struct arg *args, struct sample *smp, const char *kw
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -2949,9 +2929,6 @@ static int
 smp_fetch_sc_conn_rate(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -3021,9 +2998,6 @@ smp_fetch_sc_conn_cur(const struct arg *args, struct sample *smp, const char *kw
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3049,9 +3023,6 @@ smp_fetch_sc_sess_cnt(const struct arg *args, struct sample *smp, const char *kw
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3075,9 +3046,6 @@ static int
 smp_fetch_sc_sess_rate(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -3105,9 +3073,6 @@ smp_fetch_sc_http_req_cnt(const struct arg *args, struct sample *smp, const char
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3132,9 +3097,6 @@ static int
 smp_fetch_sc_http_req_rate(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -3162,9 +3124,6 @@ smp_fetch_sc_http_err_cnt(const struct arg *args, struct sample *smp, const char
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3189,9 +3148,6 @@ static int
 smp_fetch_sc_http_err_rate(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -3219,9 +3175,6 @@ smp_fetch_sc_kbytes_in(const struct arg *args, struct sample *smp, const char *k
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3246,9 +3199,6 @@ static int
 smp_fetch_sc_bytes_in_rate(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
@@ -3276,9 +3226,6 @@ smp_fetch_sc_kbytes_out(const struct arg *args, struct sample *smp, const char *
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3304,9 +3251,6 @@ smp_fetch_sc_bytes_out_rate(const struct arg *args, struct sample *smp, const ch
 {
 	struct stkctr *stkctr;
 
-	if (!smp->strm)
-		return 0;
-
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
 		return 0;
@@ -3331,9 +3275,6 @@ static int
 smp_fetch_sc_trackers(const struct arg *args, struct sample *smp, const char *kw, void *private)
 {
 	struct stkctr *stkctr;
-
-	if (!smp->strm)
-		return 0;
 
 	stkctr = smp_fetch_sc_stkctr(smp->sess, smp->strm, args, kw);
 	if (!stkctr)
