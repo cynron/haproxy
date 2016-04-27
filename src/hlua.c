@@ -3025,6 +3025,7 @@ __LJMP static int hlua_run_sample_fetch(lua_State *L)
 		hlua_lua2arg(L, i + 2, &args[i]);
 	}
 	args[i].type = ARGT_STOP;
+	args[i].data.str.str = NULL;
 
 	/* Check arguments. */
 	MAY_LJMP(hlua_lua2arg_check(L, 2, args, f->arg_mask, hsmp->p));
@@ -3130,6 +3131,7 @@ __LJMP static int hlua_run_sample_conv(lua_State *L)
 		hlua_lua2arg(L, i + 3, &args[i]);
 	}
 	args[i].type = ARGT_STOP;
+	args[i].data.str.str = NULL;
 
 	/* Check arguments. */
 	MAY_LJMP(hlua_lua2arg_check(L, 3, args, conv->arg_mask, hsmp->p));
