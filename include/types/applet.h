@@ -135,6 +135,12 @@ struct appctx {
 			struct proxy *px;	/* current proxy being dumped, NULL = not started yet. */
 			struct server *sv;	/* current server being dumped, NULL = not started yet. */
 		} server_state;
+		struct {
+			struct proxy *px;	/* current proxy being dumped, NULL = not started yet. */
+		} be;				/* used by "show backends" command */
+		struct {
+			char **var;
+		} env;
 	} ctx;					/* used by stats I/O handlers to dump the stats */
 };
 
