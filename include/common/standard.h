@@ -1046,4 +1046,23 @@ static inline unsigned long long rdtsc()
 }
 #endif
 
+/* append a copy of string <str> (in a wordlist) at the end of the list <li>
+ * On failure : return 0 and <err> filled with an error message.
+ * The caller is responsible for freeing the <err> and <str> copy
+ * memory area using free()
+ */
+struct list;
+int list_append_word(struct list *li, const char *str, char **err);
+
+/* same as realloc() except that ptr is also freed upon failure */
+static inline void *my_realloc2(void *ptr, size_t size)
+{
+	void *ret;
+
+	ret = realloc(ptr, size);
+	if (!ret && size)
+		free(ptr);
+	return ret;
+}
+
 #endif /* _COMMON_STANDARD_H */
