@@ -813,10 +813,10 @@ static inline int set_host_port(struct sockaddr_storage *addr, int port)
 }
 
 /* Return true if IPv4 address is part of the network */
-extern int in_net_ipv4(struct in_addr *addr, struct in_addr *mask, struct in_addr *net);
+extern int in_net_ipv4(const void *addr, const struct in_addr *mask, const struct in_addr *net);
 
 /* Return true if IPv6 address is part of the network */
-extern int in_net_ipv6(struct in6_addr *addr, struct in6_addr *mask, struct in6_addr *net);
+extern int in_net_ipv6(const void *addr, const struct in6_addr *mask, const struct in6_addr *net);
 
 /* Map IPv4 adress on IPv6 address, as specified in RFC 3513. */
 extern void v4tov6(struct in6_addr *sin6_addr, struct in_addr *sin_addr);

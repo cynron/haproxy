@@ -677,8 +677,7 @@ int dns_get_ip_from_response(unsigned char *resp, unsigned char *resp_end,
 		switch (type) {
 			case DNS_RTYPE_A:
 				/* check if current reccord's IP is the same as server one's */
-				if ((currentip_sin_family == AF_INET)
-						&& (*(uint32_t *)reader == *(uint32_t *)currentip)) {
+				if ((currentip_sin_family == AF_INET) && memcmp(reader, currentip, 4) == 0) {
 					currentip_found = 1;
 					newip4 = reader;
 					/* we can stop now if server's family preference is IPv4
