@@ -32,6 +32,8 @@ struct stream;
 #define HLUA_F_AS_STRING    0x01
 #define HLUA_F_MAY_USE_HTTP 0x02
 
+#define HLUA_TXN_NOTERM 0x00000001
+
 enum hlua_exec {
 	HLUA_E_OK = 0,
 	HLUA_E_AGAIN,  /* LUA yield, must resume the stack execution later, when
@@ -104,6 +106,7 @@ struct hlua_txn {
 	struct stream *s;
 	struct proxy *p;
 	int dir;                /* SMP_OPT_DIR_{REQ,RES} */
+	int flags;
 };
 
 /* This struct contains the applet context. */
