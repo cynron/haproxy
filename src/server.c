@@ -1148,6 +1148,10 @@ int parse_server(const char *file, int linenum, char **args, struct proxy *curpr
 				newsrv->flags |= SRV_F_BACKUP;
 				cur_arg ++;
 			}
+			else if (!strcmp(args[cur_arg], "nlb-toa")) {
+				newsrv->flags |= SRV_F_NLB_TOA;
+				cur_arg ++;
+			}
 			else if (!defsrv && !strcmp(args[cur_arg], "non-stick")) {
 				newsrv->flags |= SRV_F_NON_STICK;
 				cur_arg ++;

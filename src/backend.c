@@ -1072,7 +1072,21 @@ int connect_server(struct session *s)
 
 		si_attach_conn(s->req->cons, srv_conn);
 
-		assign_tproxy_address(s);
+		/**
+		 * !!! Note:
+		 *       If you enable nlb toa,
+		 *       then tproxy will be disabled by nlb-toa
+		 */
+		if (objt_server(s->target) &&
+				objt_server(s->target)->flags & SRV_F_NLB_TOA) {
+			cli_conn = objt_conn(s->req->prod->end);
+			if (cli_conn) {
+				srv_conn->addr.from = cli_conn->addr.from;
+				srv_conn->flags |= CO_FL_NLB_TOA;
+			}
+		}
+		else
+			assign_tproxy_address(s);
 	}
 	else {
 		/* the connection is being reused, just re-attach it */
