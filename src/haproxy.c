@@ -566,6 +566,7 @@ void init(int argc, char **argv)
 	struct wordlist *wl;
 	char *progname;
 	char *change_dir = NULL;
+	struct proxy *px;
 
 	chunk_init(&trash, malloc(global.tune.bufsize), global.tune.bufsize);
 	alloc_trash_buffers(global.tune.bufsize);
@@ -851,6 +852,9 @@ void init(int argc, char **argv)
 
 	/* Apply server states */
 	apply_server_state();
+
+	for (px = proxy; px; px = px->next)
+		srv_compute_all_admin_states(px);
 
 	global_listener_queue_task = task_new();
 	if (!global_listener_queue_task) {
