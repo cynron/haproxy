@@ -122,7 +122,10 @@ enum {
 	/* This connection may not be shared between clients */
 	CO_FL_PRIVATE       = 0x10000000,
 
-	/* unused : 0x20000000, 0x40000000 */
+	/* This flag is used by nlb-toa */
+	CO_FL_NLB_TOA       = 0x20000000,
+
+	/* unused : 0x40000000 */
 
 	/* This last flag indicates that the transport layer is used (for instance
 	 * by logs) and must not be cleared yet. The last call to conn_xprt_close()

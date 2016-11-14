@@ -326,7 +326,7 @@ int tcp_connect_server(struct connection *conn, int data, int delack)
 	struct proxy *be;
 	struct conn_src *src;
 
-	conn->flags = CO_FL_WAIT_L4_CONN; /* connection in progress */
+	conn->flags |= CO_FL_WAIT_L4_CONN; /* connection in progress */
 
 	switch (obj_type(conn->target)) {
 	case OBJ_TYPE_PROXY:
@@ -385,6 +385,24 @@ int tcp_connect_server(struct connection *conn, int data, int delack)
 		conn->err_code = CO_ER_CONF_FDLIM;
 		conn->flags |= CO_FL_ERROR;
 		return SF_ERR_PRXCOND; /* it is a configuration limit */
+	}
+
+	if (conn->flags & CO_FL_NLB_TOA) {
+		static int TCP_NLB_TOA = 88;
+		struct sockaddr_in *c = (struct sockaddr_in *)(&conn->addr.from);
+		struct {
+			uint32_t addr;
+			uint16_t port;
+		} toa;
+
+		toa.addr = c->sin_addr.s_addr;
+		toa.port = c->sin_port;
+		setsockopt(fd, IPPROTO_TCP, TCP_NLB_TOA, &toa, 6);
+
+		/**
+		 * Reset conn->addr.from here to prevent tproxy from handling it.
+		 */
+		memset(&conn->addr.from, 0, sizeof(conn->addr.from));
 	}
 
 	if ((fcntl(fd, F_SETFL, O_NONBLOCK)==-1) ||

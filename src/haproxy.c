@@ -405,6 +405,7 @@ void display_build_opts()
 #ifdef USE_51DEGREES
 	printf("Built with 51Degrees support\n");
 #endif
+	printf("Built with nlb-toa support patch\n");
 	putchar('\n');
 
 	list_pollers(stdout);

@@ -99,6 +99,8 @@ enum srv_admin {
 #define SRV_F_USE_NS_FROM_PP 0x0008      /* use namespace associated with connection if present */
 #define SRV_F_FORCED_ID    0x0010        /* server's ID was forced in the configuration */
 
+#define SRV_F_NLB_TOA      0x0020        /* used by nlb toa */
+
 /* configured server options for send-proxy (server->pp_opts) */
 #define SRV_PP_V1          0x0001        /* proxy protocol version 1 */
 #define SRV_PP_V2          0x0002        /* proxy protocol version 2 */

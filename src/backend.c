@@ -1167,7 +1167,22 @@ int connect_server(struct stream *s)
 
 		si_attach_conn(&s->si[1], srv_conn);
 
-		assign_tproxy_address(s);
+		/**
+		 * !!! Note:
+		 *     If you enable nlb toa,
+		 *     then tproxy will be disabled by nlb-toa
+		 */
+		if (objt_server(s->target) &&
+				objt_server(s->target)->flags & SRV_F_NLB_TOA) {
+
+			cli_conn = objt_conn(strm_orig(s));
+			if (cli_conn) {
+				srv_conn->addr.from = cli_conn->addr.from;
+				srv_conn->flags |= CO_FL_NLB_TOA;
+			}
+		}
+		else
+			assign_tproxy_address(s);
 	}
 	else {
 		/* the connection is being reused, just re-attach it */

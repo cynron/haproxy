@@ -1224,6 +1224,10 @@ int parse_server(const char *file, int linenum, char **args, struct proxy *curpr
 				newsrv->check.send_proxy = 1;
 				cur_arg ++;
 			}
+			else if (!strcmp(args[cur_arg], "nlb-toa")) {
+				newsrv->flags |= SRV_F_NLB_TOA;
+				cur_arg ++;
+			}
 			else if (!strcmp(args[cur_arg], "weight")) {
 				int w;
 				w = atol(args[cur_arg + 1]);
