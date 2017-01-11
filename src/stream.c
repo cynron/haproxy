@@ -91,6 +91,7 @@ struct stream *stream_new(struct session *sess, struct task *t, enum obj_type *o
 	s->logs.level = 0;
 	s->logs.accept_date = sess->accept_date; /* user-visible date for logging */
 	s->logs.tv_accept = sess->tv_accept;   /* corrected date for internal use */
+	s->logs.tv_txn_start = sess->tv_accept;   /* The first transaction date is set to the accept date */
 	tv_zero(&s->logs.tv_request);
 	s->logs.t_queue = -1;
 	s->logs.t_connect = -1;

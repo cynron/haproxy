@@ -99,6 +99,7 @@ struct strm_logs {
 	int level;                      /* log level to force + 1 if > 0, -1 = no log */
 	struct timeval accept_date;     /* date of the stream's accept() in user date */
 	struct timeval tv_accept;       /* date of the stream's accept() in internal date (monotonic) */
+	struct timeval tv_txn_start;    /* date of the stream's first recv in each transaction */
 	struct timeval tv_request;      /* date the request arrives, {0,0} if never occurs */
 	long  t_queue;                  /* delay before the stream gets out of the connect queue, -1 if never occurs */
 	long  t_connect;                /* delay before the connect() to the server succeeds, -1 if never occurs */

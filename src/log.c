@@ -114,6 +114,7 @@ static const struct logformat_type logformat_keywords[] = {
 	{ "Tr", LOG_FMT_TR, PR_MODE_HTTP, LW_BYTES, NULL },       /* Tr */
 	{ "Ts", LOG_FMT_TS, PR_MODE_TCP, LW_INIT, NULL },   /* timestamp GMT */
 	{ "Tt", LOG_FMT_TT, PR_MODE_TCP, LW_BYTES, NULL },       /* Tt */
+	{ "NTt", LOG_FMT_NTT, PR_MODE_TCP, LW_BYTES, NULL },       /* NTt */
 	{ "Tw", LOG_FMT_TW, PR_MODE_TCP, LW_BYTES, NULL },       /* Tw */
 	{ "U", LOG_FMT_BYTES_UP, PR_MODE_TCP, LW_BYTES, NULL },  /* bytes from client to server */
 	{ "ac", LOG_FMT_ACTCONN, PR_MODE_TCP, LW_BYTES, NULL },  /* actconn */
@@ -1516,6 +1517,16 @@ int build_logline(struct stream *s, char *dst, size_t maxsize, struct list *list
 				if (!(fe->to_log & LW_BYTES))
 					LOGCHAR('+');
 				ret = ltoa_o(s->logs.t_close, tmplog, dst + maxsize - tmplog);
+				if (ret == NULL)
+					goto out;
+				tmplog = ret;
+				last_isspace = 0;
+				break;
+
+			case LOG_FMT_NTT:  // %NTt
+				if (!(fe->to_log & LW_BYTES))
+					LOGCHAR('+');
+				ret = ltoa_o(tv_ms_elapsed(&s->logs.tv_txn_start, &now), tmplog, dst + maxsize - tmplog);
 				if (ret == NULL)
 					goto out;
 				tmplog = ret;

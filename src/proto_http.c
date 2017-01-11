@@ -2713,6 +2713,10 @@ int http_wait_for_request(struct stream *s, struct channel *req, int an_bit)
 			}
 		}
 
+		if ((txn->flags & TX_NOT_FIRST) && (msg->msg_state == HTTP_MSG_RQBEFORE)) {
+			s->logs.tv_txn_start = now; /* subsequent transactions for this stream reset the time */
+		}
+
 		if (likely(msg->next < req->buf->i)) /* some unparsed data are available */
 			http_msg_analyzer(msg, &txn->hdr_idx);
 	}
@@ -5213,6 +5217,7 @@ void http_end_txn_clean_session(struct stream *s)
 
 	s->logs.accept_date = date; /* user-visible date for logging */
 	s->logs.tv_accept = now;  /* corrected date for internal use */
+	s->logs.tv_txn_start = s->logs.tv_accept; /* corrected date for internal use */
 	tv_zero(&s->logs.tv_request);
 	s->logs.t_queue = -1;
 	s->logs.t_connect = -1;
